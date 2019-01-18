@@ -8,8 +8,6 @@ data = []
 for arg in sys.argv[1:]:
     data.append((arg[0], float(arg[1:]) * 100))
 
-print(data);
-
 graph = Pyasciigraph(
     float_format='{0:,.4f}'
 )
