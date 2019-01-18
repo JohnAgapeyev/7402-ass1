@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
 static const char* common_letters = "etaoinshrdlucmfwyp";
+
+static uint64_t letter_frequency_arr[26];
 
 unsigned long plaintext_frequency(const unsigned char* input, const size_t len) {
     unsigned long score = 0;
@@ -15,6 +18,15 @@ unsigned long plaintext_frequency(const unsigned char* input, const size_t len) 
         }
     }
     return score;
+}
+
+void letter_frequency(const unsigned char* input, const size_t len) {
+    memset(letter_frequency_arr, 0, sizeof(uint64_t) * 26);
+    for (size_t i = 0; i < len; ++i) {
+        if (isalpha(input[i])) {
+            letter_frequency_arr[tolower(input[i]) - 'a']++;
+        }
+    }
 }
 
 unsigned char* caesar_cipher(
@@ -35,6 +47,13 @@ size_t file_len(FILE* fp) {
     return sz;
 }
 
+int cmp(const void *lhs, const void *rhs) {
+    uint64_t x, y;
+    memcpy(&x, lhs, sizeof(uint64_t));
+    memcpy(&y, rhs, sizeof(uint64_t));
+    return x <y;
+}
+
 int main(int argc, char** argv) {
     if (argc != 2) {
         printf("Needs a filename\n");
@@ -53,6 +72,18 @@ int main(int argc, char** argv) {
     fread(data, 1, data_len, fp);
 
     printf("Frequency score: %zu\n", plaintext_frequency(data, data_len));
+
+    uint64_t tmp[26];
+
+    letter_frequency(data, data_len);
+
+    memcpy(tmp, letter_frequency_arr, sizeof(uint64_t) * 26);
+
+    qsort(tmp, 26, sizeof(uint64_t), cmp);
+
+    for (int i = 0; i < 26; ++i) {
+        printf("%c: %lu\n", 'a' + i, tmp[i]);
+    }
 
     fclose(fp);
 
