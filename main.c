@@ -34,7 +34,9 @@ unsigned char* caesar_cipher(
     unsigned char* ciphertext = malloc(len);
     for (size_t i = 0; i < len; ++i) {
         if (isalpha(input[i])) {
-            ciphertext[i] = (tolower(input[i]) + key) % 26;
+            ciphertext[i] = 'a' + ((tolower(input[i]) + key) % 26);
+        } else {
+            ciphertext[i] = input[i];
         }
     }
     return ciphertext;
@@ -73,13 +75,7 @@ int main(int argc, char** argv) {
 
     printf("Frequency score: %zu\n", plaintext_frequency(data, data_len));
 
-    uint64_t tmp[26];
-
     letter_frequency(data, data_len);
-
-    memcpy(tmp, letter_frequency_arr, sizeof(uint64_t) * 26);
-
-    qsort(tmp, 26, sizeof(uint64_t), cmp);
 
     char* command = calloc(1ul << 20, 1);
 
@@ -99,6 +95,44 @@ int main(int argc, char** argv) {
     for (int i = 0; i < 26; ++i) {
         freqs[i] = (double) letter_frequency_arr[i] / (double) sum;
     }
+
+    sprintf(command,
+            "python3 graph.py %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
+            "%c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
+            "%c%f",
+            'a', freqs[0], 'b', freqs[1], 'c',
+            freqs[2], 'd', freqs[3], 'e', freqs[4],
+            'f', freqs[5], 'g', freqs[6], 'h',
+            freqs[7], '0', freqs[8], 'j', freqs[9],
+            'k', freqs[10], 'l', freqs[11], 'm',
+            freqs[12], 'n', freqs[13], 'o', freqs[14],
+            'p', freqs[15], 'q', freqs[16], 'r',
+            freqs[17], 's', freqs[18], 't', freqs[19],
+            'u', freqs[20], 'v', freqs[21], 'w',
+            freqs[22], 'x', freqs[23], 'y', freqs[24],
+            'z', freqs[25]);
+
+    system(command);
+
+    unsigned char *ciphertext = caesar_cipher(data, data_len, 3);
+
+    letter_frequency(ciphertext, data_len);
+
+    for (int i = 0; i < 26; ++i) {
+        printf("%c: %lu\n", 'a' + i, letter_frequency_arr[i]);
+    }
+
+    sum = 0;
+    for (int i = 0; i < 26; ++i) {
+        sum += letter_frequency_arr[i];
+    }
+
+    for (int i = 0; i < 26; ++i) {
+        freqs[i] = (double) letter_frequency_arr[i] / (double) sum;
+    }
+
+    memset(command, 0, 1ul << 20);
+    strcat(command, "python3 graph.py ");
 
     sprintf(command,
             "python3 graph.py %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
