@@ -1,6 +1,6 @@
-#include <stdio.h>
 #include <ctype.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -47,11 +47,11 @@ size_t file_len(FILE* fp) {
     return sz;
 }
 
-int cmp(const void *lhs, const void *rhs) {
+int cmp(const void* lhs, const void* rhs) {
     uint64_t x, y;
     memcpy(&x, lhs, sizeof(uint64_t));
     memcpy(&y, rhs, sizeof(uint64_t));
-    return x <y;
+    return x < y;
 }
 
 int main(int argc, char** argv) {
@@ -81,9 +81,42 @@ int main(int argc, char** argv) {
 
     qsort(tmp, 26, sizeof(uint64_t), cmp);
 
+    char* command = calloc(1ul << 20, 1);
+
+    strcat(command, "python3 graph.py ");
+
     for (int i = 0; i < 26; ++i) {
-        printf("%c: %lu\n", 'a' + i, tmp[i]);
+        printf("%c: %lu\n", 'a' + i, letter_frequency_arr[i]);
     }
+
+    double freqs[26];
+
+    uint64_t sum = 0;
+    for (int i = 0; i < 26; ++i) {
+        sum += letter_frequency_arr[i];
+    }
+
+    for (int i = 0; i < 26; ++i) {
+        freqs[i] = (double) letter_frequency_arr[i] / (double) sum;
+    }
+
+    sprintf(command,
+            "python3 graph.py %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
+            "%c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
+            "%c%f",
+            'a', freqs[0], 'b', freqs[1], 'c',
+            freqs[2], 'd', freqs[3], 'e', freqs[4],
+            'f', freqs[5], 'g', freqs[6], 'h',
+            freqs[7], '0', freqs[8], 'j', freqs[9],
+            'k', freqs[10], 'l', freqs[11], 'm',
+            freqs[12], 'n', freqs[13], 'o', freqs[14],
+            'p', freqs[15], 'q', freqs[16], 'r',
+            freqs[17], 's', freqs[18], 't', freqs[19],
+            'u', freqs[20], 'v', freqs[21], 'w',
+            freqs[22], 'x', freqs[23], 'y', freqs[24],
+            'z', freqs[25]);
+
+    system(command);
 
     fclose(fp);
 

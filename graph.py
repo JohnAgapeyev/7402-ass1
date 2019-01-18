@@ -6,8 +6,13 @@ import sys
 data = []
 
 for arg in sys.argv[1:]:
-    data.append((arg[0], int(arg[1:])))
+    data.append((arg[0], float(arg[1:]) * 100))
 
-graph = Pyasciigraph()
+print(data);
+
+graph = Pyasciigraph(
+    float_format='{0:,.4f}'
+)
+
 for line in  graph.graph('Letter Frequency', data):
     print(line)
