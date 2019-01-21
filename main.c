@@ -73,17 +73,11 @@ int main(int argc, char** argv) {
 
     fread(data, 1, data_len, fp);
 
-    printf("Frequency score: %zu\n", plaintext_frequency(data, data_len));
-
     letter_frequency(data, data_len);
 
     char* command = calloc(1ul << 20, 1);
 
     strcat(command, "python3 graph.py ");
-
-    for (int i = 0; i < 26; ++i) {
-        printf("%c: %lu\n", 'a' + i, letter_frequency_arr[i]);
-    }
 
     double freqs[26];
 
@@ -118,10 +112,6 @@ int main(int argc, char** argv) {
 
     letter_frequency(ciphertext, data_len);
 
-    for (int i = 0; i < 26; ++i) {
-        printf("%c: %lu\n", 'a' + i, letter_frequency_arr[i]);
-    }
-
     sum = 0;
     for (int i = 0; i < 26; ++i) {
         sum += letter_frequency_arr[i];
@@ -155,6 +145,8 @@ int main(int argc, char** argv) {
     fclose(fp);
 
     free(data);
+    free(ciphertext);
+    free(command);
 
     return 0;
 }
