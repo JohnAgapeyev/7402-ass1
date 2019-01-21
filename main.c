@@ -34,7 +34,10 @@ unsigned char* caesar_cipher(
     unsigned char* ciphertext = malloc(len);
     for (size_t i = 0; i < len; ++i) {
         if (isalpha(input[i])) {
-            ciphertext[i] = 'a' + ((tolower(input[i]) + key) % 26);
+            ciphertext[i] = tolower(input[i]) + key;
+            if (ciphertext[i] > 'z') {
+                ciphertext[i] -= 26;
+            }
         } else {
             ciphertext[i] = input[i];
         }
