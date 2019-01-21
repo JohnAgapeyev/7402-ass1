@@ -94,21 +94,15 @@ int main(int argc, char** argv) {
             "python3 graph.py %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
             "%c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
             "%c%f",
-            'a', freqs[0], 'b', freqs[1], 'c',
-            freqs[2], 'd', freqs[3], 'e', freqs[4],
-            'f', freqs[5], 'g', freqs[6], 'h',
-            freqs[7], '0', freqs[8], 'j', freqs[9],
-            'k', freqs[10], 'l', freqs[11], 'm',
-            freqs[12], 'n', freqs[13], 'o', freqs[14],
-            'p', freqs[15], 'q', freqs[16], 'r',
-            freqs[17], 's', freqs[18], 't', freqs[19],
-            'u', freqs[20], 'v', freqs[21], 'w',
-            freqs[22], 'x', freqs[23], 'y', freqs[24],
-            'z', freqs[25]);
+            'a', freqs[0], 'b', freqs[1], 'c', freqs[2], 'd', freqs[3], 'e', freqs[4], 'f',
+            freqs[5], 'g', freqs[6], 'h', freqs[7], '0', freqs[8], 'j', freqs[9], 'k', freqs[10],
+            'l', freqs[11], 'm', freqs[12], 'n', freqs[13], 'o', freqs[14], 'p', freqs[15], 'q',
+            freqs[16], 'r', freqs[17], 's', freqs[18], 't', freqs[19], 'u', freqs[20], 'v',
+            freqs[21], 'w', freqs[22], 'x', freqs[23], 'y', freqs[24], 'z', freqs[25]);
 
     system(command);
 
-    unsigned char *ciphertext = caesar_cipher(data, data_len, 3);
+    unsigned char* ciphertext = caesar_cipher(data, data_len, 3);
 
     letter_frequency(ciphertext, data_len);
 
@@ -128,19 +122,30 @@ int main(int argc, char** argv) {
             "python3 graph.py %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
             "%c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f %c%f "
             "%c%f",
-            'a', freqs[0], 'b', freqs[1], 'c',
-            freqs[2], 'd', freqs[3], 'e', freqs[4],
-            'f', freqs[5], 'g', freqs[6], 'h',
-            freqs[7], '0', freqs[8], 'j', freqs[9],
-            'k', freqs[10], 'l', freqs[11], 'm',
-            freqs[12], 'n', freqs[13], 'o', freqs[14],
-            'p', freqs[15], 'q', freqs[16], 'r',
-            freqs[17], 's', freqs[18], 't', freqs[19],
-            'u', freqs[20], 'v', freqs[21], 'w',
-            freqs[22], 'x', freqs[23], 'y', freqs[24],
-            'z', freqs[25]);
+            'a', freqs[0], 'b', freqs[1], 'c', freqs[2], 'd', freqs[3], 'e', freqs[4], 'f',
+            freqs[5], 'g', freqs[6], 'h', freqs[7], '0', freqs[8], 'j', freqs[9], 'k', freqs[10],
+            'l', freqs[11], 'm', freqs[12], 'n', freqs[13], 'o', freqs[14], 'p', freqs[15], 'q',
+            freqs[16], 'r', freqs[17], 's', freqs[18], 't', freqs[19], 'u', freqs[20], 'v',
+            freqs[21], 'w', freqs[22], 'x', freqs[23], 'y', freqs[24], 'z', freqs[25]);
 
     system(command);
+
+    printf("Top 6 probabilities:\ne: %f\nt: %f\na: %f\no: %f\ni: %f\nn: %f\n",
+            0.04 * freqs['e' - 'a'],
+            0.04 * freqs['t' - 'a'],
+            0.04 * freqs['a' - 'a'],
+            0.04 * freqs['o' - 'a'],
+            0.04 * freqs['i' - 'a'],
+            0.04 * freqs['n' - 'a']
+            );
+    printf("Top 6 probabilities:\ne: %f\nt: %f\na: %f\no: %f\ni: %f\nn: %f\n",
+            freqs['e' - 'a'],
+            freqs['t' - 'a'],
+            freqs['a' - 'a'],
+            freqs['o' - 'a'],
+            freqs['i' - 'a'],
+            freqs['n' - 'a']
+            );
 
     fclose(fp);
 
