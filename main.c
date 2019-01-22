@@ -13,7 +13,7 @@ unsigned long plaintext_frequency(const unsigned char* input, const size_t len) 
     for (size_t i = 0; i < strlen(common_letters); ++i) {
         for (size_t j = 0; j < len; ++j) {
             if (tolower(input[j]) == common_letters[i]) {
-                ++score;
+                score += strlen(common_letters) - i;
             }
         }
     }
@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
 
     system(command);
 
-    unsigned char* ciphertext = caesar_cipher(data, data_len, 3);
+    unsigned char* ciphertext = caesar_cipher(data, data_len, 7);
 
     letter_frequency(ciphertext, data_len);
 
@@ -141,13 +141,28 @@ int main(int argc, char** argv) {
             0.04 * freqs['i' - 'a'],
             0.04 * freqs['n' - 'a']
             );
-    printf("Top 6 probabilities:\ne: %f\nt: %f\na: %f\no: %f\ni: %f\nn: %f\n",
-            freqs['e' - 'a'],
-            freqs['t' - 'a'],
-            freqs['a' - 'a'],
-            freqs['o' - 'a'],
-            freqs['i' - 'a'],
-            freqs['n' - 'a']
+
+    unsigned long max_score = 0;
+    int best_key = 0;
+    for (int i = 1; i < 26; ++i) {
+        unsigned char* tmp_ciphertext = caesar_cipher(ciphertext, data_len, i);
+        const unsigned long s = plaintext_frequency(tmp_ciphertext, data_len);
+        if (s > max_score) {
+            max_score = s;
+            best_key = i;
+        }
+        free(tmp_ciphertext);
+    }
+
+    printf("Best scoring key tested: %d\n", 26 - best_key);
+
+    printf("Top 6 letter results:\ne: %c\nt: %c\na: %c\no: %c\ni: %c\nn: %c\n",
+            'e' + 26 - best_key,
+            't' + 26 - best_key,
+            'a' + 26 - best_key,
+            'o' + 26 - best_key,
+            'i' + 26 - best_key,
+            'n' + 26 - best_key
             );
 
     fclose(fp);
