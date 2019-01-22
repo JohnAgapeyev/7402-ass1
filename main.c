@@ -52,13 +52,6 @@ size_t file_len(FILE* fp) {
     return sz;
 }
 
-int cmp(const void* lhs, const void* rhs) {
-    uint64_t x, y;
-    memcpy(&x, lhs, sizeof(uint64_t));
-    memcpy(&y, rhs, sizeof(uint64_t));
-    return x < y;
-}
-
 int main(int argc, char** argv) {
     if (argc != 2) {
         printf("Needs a filename\n");
